@@ -8,17 +8,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kassi-tech/thread-bus.git"
+    "url": "https://github.com/s-voloshynenko/thread-bus.git"
   },
   "keywords": [
     "Microservice",
     "RabbitMQ",
     "Thread"
   ],
-  "author": "KASSI",
+  "author": "Sergey Voloshynenko",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kassi-tech/thread-bus/issues"
+    "url": "https://github.com/s-voloshynenko/thread-bus/issues"
   },
   "dependencies": {
     "amqp": "^0.2.4",
