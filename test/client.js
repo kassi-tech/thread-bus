@@ -4,11 +4,6 @@ var Thread = require('../index.js');
 var expect = require('chai').expect;
 
 describe('Thread', () => {
-  afterEach((done) => {
-    Thread.disconnect();
-    done();
-  });
-
   describe('client', () => {
     let options = {};
 
@@ -46,6 +41,29 @@ describe('Thread', () => {
         expect(Thread.connection.options.ssl.enabled).to.equal(false);
         done();
       }).catch(done);
+    });
+
+    it('should disconnect from AMQP server', (done) => {
+      Thread.connect().then((connection) => {
+        return Thread.disconnect();
+      }).then((result) => {
+        expect(result.status).to.equal('closed');
+        expect(result.uri).to.equal('amqp://guest:guest@127.0.0.1:5672');
+        expect(Thread.connection).to.equal(null);
+        done();
+      }).catch(done);
+    });
+
+    it('should not disconnect from AMQP server', (done) => {
+      let errorMessage = new Error('Thread isn\'t connected to AMQP server.');
+
+      Thread.disconnect()
+        .then(done)
+        .catch((error) => {
+          expect(error).to.deep.equal(errorMessage);
+          expect(Thread.connection).to.equal(null);
+          done();
+        });
     });
   });
 });

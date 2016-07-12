@@ -1,5 +1,6 @@
 # thread-bus
 Thread-bus is an event bus oriented microservice framework.
+![travis](https://travis-ci.org/s-voloshynenko/thread-bus.svg?branch=master)
 
 > How it works?
 

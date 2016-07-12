@@ -13,7 +13,10 @@
   },
   "keywords": [
     "Microservice",
-    "RabbitMQ",
+    "EventBus",
+    "AMQP",
+    "queue",
+    "exchange",
     "Thread"
   ],
   "author": "Sergey Voloshynenko",

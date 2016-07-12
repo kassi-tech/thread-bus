@@ -53,5 +53,16 @@ describe('Thread', () => {
         done();
       }).catch(done);
     });
+
+    it('should not destroy exchange point', (done) => {
+      let errorMessage = new Error('Specified channel doesn\'t exist');
+
+      Thread.connect().then((connection) => {
+        return Thread.destroyChannel('test');
+      }).then(done).catch((error) => {
+        expect(error).to.deep.equal(errorMessage);
+        done();
+      });
+    });
   });
 });
