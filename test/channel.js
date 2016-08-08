@@ -2,6 +2,7 @@
 
 var Thread = require('../index.js');
 var expect = require('chai').expect;
+var simple = require('simple-mock');
 
 describe('Thread', () => {
   describe('channels', () => {
@@ -19,12 +20,11 @@ describe('Thread', () => {
 
     it('should create exchange point', (done) => {
       channelOptions = {
-        channel: 'test',
-        type: 'topic'
+        channel: 'test'
       };
 
-      Thread.connect().then((connection) => {
-        return Thread.createChannel(channelOptions);
+      Thread.connect().then(() => {
+        return Thread.open(channelOptions);
       }).then((result) => {
         expect(result.status).to.equal('open');
         expect(result.channel).to.equal(channelOptions.channel);
@@ -38,14 +38,13 @@ describe('Thread', () => {
 
     it('should destroy exchange point', (done) => {
       channelOptions = {
-        channel: 'test',
-        type: 'topic'
+        channel: 'test'
       };
 
-      Thread.connect().then((connection) => {
-        return Thread.createChannel(channelOptions);
+      Thread.connect().then(() => {
+        return Thread.open(channelOptions);
       }).then(() => {
-        return Thread.destroyChannel(channelOptions.channel);
+        return Thread.close(channelOptions.channel);
       }).then((result) => {
         expect(result.status).to.equal('destroyed');
         expect(result.channel).to.equal(channelOptions.channel);
@@ -57,10 +56,41 @@ describe('Thread', () => {
     it('should not destroy exchange point', (done) => {
       let errorMessage = new Error('Specified channel doesn\'t exist');
 
-      Thread.connect().then((connection) => {
-        return Thread.destroyChannel('test');
+      Thread.connect().then(() => {
+        return Thread.close('test');
       }).then(done).catch((error) => {
         expect(error).to.deep.equal(errorMessage);
+        done();
+      });
+    });
+
+    it('should listen channel', (done) => {
+      let channelOptions = {
+        channel: 'test',
+        listener: function () { }
+      };
+
+      Thread.connect().then(() => {
+        return Thread.listen(channelOptions);
+      }).then((ans) => {
+        expect(ans.status).to.equal('subscribed');
+        expect(ans.channel).to.equal(channelOptions.channel);
+        done();
+      }).catch(done);
+    });
+
+    it('should reject listener with error', (done) => {
+      let errorMessage = 'Queue doesn\'t exist';
+      let channelOptions = {
+        channel: 'test',
+        listener: function () { }
+      };
+
+      Thread.connect().then(() => {
+        simple.mock(Thread.connection, 'queue').callbackWith(null);
+        return Thread.listen(channelOptions);
+      }).then(done).catch((error) => {
+        expect(error.message).to.equal(errorMessage);
         done();
       });
     });
