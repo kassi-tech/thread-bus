@@ -1,6 +1,6 @@
 {
   "name": "thread-bus",
-  "version": "0.1.1",
+  "version": "0.2.1",
   "description": "Event bus oriented microservice library",
   "main": "index.js",
   "scripts": {
@@ -15,6 +15,7 @@
     "Microservice",
     "EventBus",
     "AMQP",
+    "RabbitMQ",
     "queue",
     "exchange",
     "Thread"

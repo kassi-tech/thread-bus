@@ -11,3 +11,6 @@ coverage
 
 # Dependency directory
 node_modules
+
+#idea products
+.idea

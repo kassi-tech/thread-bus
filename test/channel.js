@@ -15,6 +15,7 @@ describe('Thread', () => {
 
     afterEach((done) => {
       Thread.disconnect();
+      simple.restore();
       done();
     });
 
@@ -92,6 +93,16 @@ describe('Thread', () => {
       }).then(done).catch((error) => {
         expect(error.message).to.equal(errorMessage);
         done();
+      });
+    });
+
+    it('test', (done) => {
+      Thread.connect().then(() => {
+        return Thread.listen({ channel: 'test-queue', listener: function (a, b) { console.log('LOL', a, b); } });
+      }).then(() => {
+        Thread.publish({ channel: 'test-queue', body: 'lol', options: { replyTo: '' } });
+        Thread.publish({ channel: 'test-queue', body: 'lol2' });
+        setTimeout(done, 1000);
       });
     });
   });
